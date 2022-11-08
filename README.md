@@ -20,6 +20,27 @@ Storage: EBS GP3 SSD 256 GB
 
 
 
+## Video decoding
+
+The provided video are all encoded with X265 in MP4 format. You can use whatever works best for your model to decode the video and load images.
+
+As an example, you can convert the video to Y4M format and upsclae to the reference video resolution (2160p) if your model reads raw video input. If your FR model need the same resolution videos as input you can use whatever upscaling method works best for your model. Here we used the following command to decode and upscale to 2160p resolution using lanczos a=5 and output a Y4M video with FFMPEG.
+
+```bash
+ffmpeg -y -nostdin -hide_banner \
+  -i {in_mp4_path} \
+  -f yuv4mpegpipe \
+  -pix_fmt yuv420p10le \
+  -strict -1 \
+  -vf scale=3840:2160 \
+  -sws_flags lanczos+accurate_rnd+full_chroma_int \
+  -sws_dither none \
+  -param0 5 \
+  {out_y4m_path}
+```
+
+
+
 ## Docker submission guideline
 
 ### Python
@@ -75,6 +96,8 @@ For full reference (FR) model:
 After taking input videos, your model should output a single result file to the location specified by command line option `--resulf_file`. You do NOT need to add `txt` extension to the path given by the command line. Full output file path will be given by the command line input.
 
 The result file is **a txt file with only one float point number ranging from 0 to 100 in a single line**. The number should represent your model's prediction of the input video quality. 
+
+
 
 
 
