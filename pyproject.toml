@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "vqm"
+version = "0.1.0"
+description = "Video quality metric example for 2023 WACV VQM challenge"
+authors = ["Your name <your email>"]
+license = "LICENSE"
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.22.3"
+scipy = "^1.8.0"
+pandas = "^1.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+vqm = "vqm:main"

@@ -58,6 +58,21 @@ Within `your_script.py` or `your_module` `__main__.py` file, you can use `argpar
 
 
 An example python environment setup with some pre-installed packages is given in this repo, if you need a template to start.
+`Poetry` is used to config the local python virtual environment. You can used the following commands to manage packages you need and export them to the requirements file for Dockerfile to build the same environment.
+```bash
+# create new vitrual environment
+poetry install
+
+# install package
+poetry add numpy
+
+# export to requirement.txt
+poetry export -f requirements.txt --output requirements.txt
+
+# to test your model locally without docker
+poetry run vqm [pvs_video] [ref_video] [result_file]
+```
+
 
 
 
@@ -75,19 +90,19 @@ Please following the command line interface below:
 
 For no reference (NR) model:
 
-`--pvs_video` is the path to the input **distorted** MP4 video
+`pvs_video` is the path to the input **distorted** MP4 video
 
-`--result_file` is the path to the location on the disk to write your result file
+`result_file` is the path to the location on the disk to write your result file
 
 
 
 For full reference (FR) model:
 
-`--pvs_video` is the path to the input **distorted** MP4 video
+`pvs_video` is the path to the input **distorted** MP4 video
 
-`--ref_video` is the path to the input **reference** MP4 video
+`ref_video` is the path to the input **reference** MP4 video
 
-`--result_file` is the path to the location on the disk to write your result file
+`result_file` is the path to the location on the disk to write your result file
 
 
 
@@ -120,16 +135,18 @@ You can modify the build script if you need to customized building steps beyond 
 
 
 
-During evaluation process, the following commands will be run to get your model's output for one video:
+During evaluation process, you can use the `/data/tmp` inside docker as a location to store local file. For example, if you need to decode the input video into Y4M or image, you can store the file at this location. An external disk will be mounted on the docker at `/data` to store the input file and output result.
+
+The following commands will be run to get your model's output for one video:
 
 For NR model:
 
 ```bash
-docker run --rm -t vqm-test --pvs_video [input-distorted-video-path] --result_file [output_result_file_path]
+docker run --rm -v [local_storage_folder]:/data -t vqm-test --pvs_video [input-distorted-video-path] --result_file [output_result_file_path]
 ```
 
 For FR model:
 
 ```bash
-docker run --rm -t vqm-test --pvs_video [input-distorted-video-path] --ref_video [input-reference-video-path] --result_file [output_result_file_path]
+docker run --rm -v [local_storage_folder]:/data -t vqm-test --pvs_video [input-distorted-video-path] --ref_video [input-reference-video-path] --result_file [output_result_file_path]
 ```
