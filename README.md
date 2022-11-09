@@ -114,14 +114,6 @@ The result file is **a txt file with only one float point number ranging from 0 
 
 
 
-
-
-### GPU model
-
-To be added
-
-
-
 ### Our testing procedures
 
 In our testing pipeline, we will build your docker image first by running a shell script your prepared. The script is named `docker_build.sh` and should be placed in the root folder of your code. If no extra building requirement, the script should look like below
