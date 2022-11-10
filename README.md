@@ -115,7 +115,7 @@ For full reference (FR) model:
 
 ### Result file format
 
-After taking input videos, your model should output a single result file to the location specified by command line option `--resulf_file`. You do NOT need to add `txt` extension to the path given by the command line. Full output file path will be given by the command line input.
+After taking input videos, your model should output a single result file to the location specified by command line option `resulf_file`. You do NOT need to add `txt` extension to the path given by the command line. Full output file path will be given by the command line input.
 
 The result file is **a txt file with only one float point number ranging from 0 to 100 in a single line**. The number should represent your model's prediction of the input video quality. 
 
