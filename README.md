@@ -64,9 +64,11 @@ ENTRYPOINT ["python3","./your_script.py"]
 ENTRYPOINT ["python3","-m","your_module"]
 ```
 
-Within `your_script.py` or `your_module` `__main__.py` file, you can use `argparse` package or directly reading `sys.argv` to get the input video path as defined in section "Docker command line interface". An example python package named `vqm` is given in this repository. An example python environment setup with some pre-installed packages is given in this repo, if you need a template to start. You don't have to use this example as long as yo follow the command line internface requirements.
+Within `your_script.py` or `your_module` `__main__.py` file, you can use `argparse` package or directly reading `sys.argv` to get the input video path as defined in section "Docker command line interface". 
 
-In this example, `Poetry` is used to config the local python virtual environment. You can used the following commands to manage packages you need and export them to the requirements file for Dockerfile to build the same environment.
+If you need a template to start, an example python environment setup with some pre-installed packages (numpy, scipy, ffmpeg) and an empty python package named `vqm` is given in this repo. You don't have to use this example as long as your docker application follows the command line internface requirements.
+
+In this example, [Poetry](https://python-poetry.org/docs/#installation) is used to config the local python virtual environment. You can used the following commands to manage packages you need and export them to the requirements file for Dockerfile to build the same environment. 
 ```bash
 # create new vitrual environment
 poetry install
