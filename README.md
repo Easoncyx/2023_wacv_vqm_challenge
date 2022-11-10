@@ -94,7 +94,7 @@ For C/C++ application, you should build your application into binary executable 
 
 ### GPU Docker
 
-If your model need to use GPU, you can modify the Dockerfile base image to use a GPU enabled Ubuntu image, for example, `nvidia/cuda:11.6.2-base-ubuntu20.04`.
+If your model need to use GPU, you can modify the Dockerfile base image to use a GPU enabled Ubuntu image, for example, you can uncomment the 2nd line in the Dockerfile and comment out the 1st line by using `nvidia/cuda:11.6.2-base-ubuntu20.04` as base image.
 
 
 ### Docker command line interface
@@ -144,11 +144,11 @@ The following commands will be run to get your model's output for one video:
 For NR model:
 
 ```bash
-docker run --rm -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [output_result_file_path]
+docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [output_result_file_path]
 ```
 
 For FR model:
 
 ```bash
-docker run --rm -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
+docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
 ```

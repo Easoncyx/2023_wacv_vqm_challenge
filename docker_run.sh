@@ -13,7 +13,7 @@ echo $report_folder
 echo $result_file
 echo $tmp_folder
 
-docker run --rm -v ${video_folder}:/data/videos \
+docker run --rm --gpus all -v ${video_folder}:/data/videos \
     -v ${report_folder}:/data/reports \
     -v ${tmp_folder}:/data/tmp \
     -t vqm-test \
