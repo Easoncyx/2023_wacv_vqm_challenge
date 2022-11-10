@@ -34,6 +34,7 @@ def main():
     try:
         print(f"Input Arguments: {args.pvs_video}, {args.ref_video}, {args.result_file}")
         result = VQM(args.pvs_video, args.ref_video).predict()
+        print(f"Output Score: {result}")
         with open(args.result_file, 'w') as fp:
             fp.write(str(result))
         

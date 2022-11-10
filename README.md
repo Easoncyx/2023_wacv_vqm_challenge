@@ -22,9 +22,20 @@ Storage: EBS GP3 SSD 256 GB
 
 ## Video decoding
 
-The provided video are all encoded with X265 in MP4 format. You can use whatever works best for your model to decode the video and load images.
+The input distorted and reference HDR videos are all encoded with X265 in MP4 format in `yuv420p10le` format. You can use whatever works best for your model to decode the video and load images. If you need metadata such as video resolution and framerate etc, you can use ffprobe to parse the input MP4 video.
 
-As an example, you can convert the video to Y4M format and upsclae to the reference video resolution (2160p) if your model reads raw video input. If your FR model need the same resolution videos as input you can use whatever upscaling method works best for your model. Here we used the following command to decode and upscale to 2160p resolution using lanczos a=5 and output a Y4M video with FFMPEG.
+The `ffmpeg` and `ffprobe` are installed in this example `Dockerfile`. The following funtion is useful to parse the metadata from video where the `key` can be any string in this list: `[width, height, r_frame_rate, pix_fmt, display_aspect_ratio]`.
+
+```python
+def ffprobe_get_stream_info(in_video_path, key):
+    cmd = f'ffprobe -threads 1 -v 0 -of compact=p=0:nk=1 -select_streams 0 -show_entries stream={key} "{in_video_path}"'
+    ret = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+    ret = ret.decode('utf-8')
+    return ret
+```
+
+
+You can convert the video to Y4M format and upsclae to the reference video resolution (2160p) if your model reads raw video input. If your FR model need the same resolution videos as input you can use whatever upscaling method works best for your model. For example, you can use the following command to decode and upscale to 2160p resolution using lanczos a=5 and output a Y4M video with FFMPEG.
 
 ```bash
 ffmpeg -y -nostdin -hide_banner \
@@ -53,12 +64,9 @@ ENTRYPOINT ["python3","./your_script.py"]
 ENTRYPOINT ["python3","-m","your_module"]
 ```
 
-Within `your_script.py` or `your_module` `__main__.py` file, you can use `argparse` package or directly reading `sys.argv` to get the input video path as defined in section [Docker command line interface](##Docker command line interface). 
+Within `your_script.py` or `your_module` `__main__.py` file, you can use `argparse` package or directly reading `sys.argv` to get the input video path as defined in section "Docker command line interface". An example python package named `vqm` is given in this repository. An example python environment setup with some pre-installed packages is given in this repo, if you need a template to start. You don't have to use this example as long as yo follow the command line internface requirements.
 
-
-
-An example python environment setup with some pre-installed packages is given in this repo, if you need a template to start.
-`Poetry` is used to config the local python virtual environment. You can used the following commands to manage packages you need and export them to the requirements file for Dockerfile to build the same environment.
+In this example, `Poetry` is used to config the local python virtual environment. You can used the following commands to manage packages you need and export them to the requirements file for Dockerfile to build the same environment.
 ```bash
 # create new vitrual environment
 poetry install
@@ -90,19 +98,16 @@ Please following the command line interface below:
 
 For no reference (NR) model:
 
-`pvs_video` is the path to the input **distorted** MP4 video
-
-`result_file` is the path to the location on the disk to write your result file
+- 1st positional argument: `pvs_video` is the path to the input **distorted** MP4 video
+- 2nd positional argument: `result_file` is the path to the location on the disk to write your result file
 
 
 
 For full reference (FR) model:
 
-`pvs_video` is the path to the input **distorted** MP4 video
-
-`ref_video` is the path to the input **reference** MP4 video
-
-`result_file` is the path to the location on the disk to write your result file
+- 1st positional argument: `pvs_video` is the path to the input **distorted** MP4 video
+- 2nd positional argument: `ref_video` is the path to the input **reference** MP4 video
+- 3rd positional argument: `result_file` is the path to the location on the disk to write your result file
 
 
 
@@ -134,11 +139,11 @@ The following commands will be run to get your model's output for one video:
 For NR model:
 
 ```bash
-docker run --rm -v [local_storage_folder]:/data -t vqm-test --pvs_video [input-distorted-video-path] --result_file [output_result_file_path]
+docker run --rm -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [output_result_file_path]
 ```
 
 For FR model:
 
 ```bash
-docker run --rm -v [local_storage_folder]:/data -t vqm-test --pvs_video [input-distorted-video-path] --ref_video [input-reference-video-path] --result_file [output_result_file_path]
+docker run --rm -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
 ```
