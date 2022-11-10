@@ -92,6 +92,9 @@ For C/C++ application, you should build your application into binary executable 
 
 
 
+### GPU Docker
+
+If your model need to use GPU, you can modify the Dockerfile base image to use a GPU enabled Ubuntu image, for example, `nvidia/cuda:11.6.2-base-ubuntu20.04`.
 
 
 ### Docker command line interface
