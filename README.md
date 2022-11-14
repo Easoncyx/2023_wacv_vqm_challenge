@@ -120,7 +120,7 @@ For full reference (FR) model:
 
 After taking input videos, your model should output a single result file to the location specified by command line option `resulf_file`. You do NOT need to add `txt` extension to the path given by the command line. Full output file path will be given by the command line input.
 
-The result file is **a txt file with only one float point number ranging from 0 to 100 in a single line**. The number should represent your model's prediction of the input video quality. 
+The result file is **a txt file with only one float point number (MOS instead of DMOS) ranging from 0 to 100 in a single line**. The number should represent your model's prediction of the input video quality. 
 
 
 
@@ -152,3 +152,12 @@ For FR model:
 ```bash
 docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
 ```
+
+Before calculating the PLCC and RMSE a four-parameter non-linear mapping [1] is used to map the model's prediction to MOS.
+
+$$ f(o) = \frac{\beta_1-\beta_2}{1+e^{-\frac{o-\beta_3}{|\beta_4|}}} +\beta_2 $$ 
+
+where o is the objective model prediction
+
+---
+[1] K. Seshadrinathan, R. Soundararajan, A. C. Bovik and L. K. Cormack, "Study of Subjective and Objective Quality Assessment of Video," in IEEE Transactions on Image Processing, vol. 19, no. 6, pp. 1427-1441, June 2010, doi: 10.1109/TIP.2010.2042111.
