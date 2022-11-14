@@ -153,11 +153,13 @@ For FR model:
 docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
 ```
 
-Before calculating the PLCC and RMSE a four-parameter non-linear mapping [1] is used to map the model's prediction to MOS.
+
+### Non-linear mapping 
+SROCC, PLCC, RMSE and runtime complexity will be used to benchmark the result. After we obtain the model's score, before calculating the PLCC and RMSE, a four-parameter non-linear mapping [1] shown below is used to map the model's prediction to MOS on private test set.
 
 $$ f(o) = \frac{\beta_1-\beta_2}{1+e^{-\frac{o-\beta_3}{|\beta_4|}}} +\beta_2 $$ 
 
-where o is the objective model prediction
+where o is the objective model prediction.
 
 ---
 [1] K. Seshadrinathan, R. Soundararajan, A. C. Bovik and L. K. Cormack, "Study of Subjective and Objective Quality Assessment of Video," in IEEE Transactions on Image Processing, vol. 19, no. 6, pp. 1427-1441, June 2010, doi: 10.1109/TIP.2010.2042111.
