@@ -125,7 +125,7 @@ The result file is **a txt file with only one float point number (MOS instead of
 
 
 ### Our testing procedures
-
+#### Build the docker container
 In our testing pipeline, we will build your docker image first by running a shell script your prepared. The script is named `docker_build.sh` and should be placed in the root folder of your code. If no extra building requirement, the script should look like below
 
 ```shell
@@ -136,22 +136,38 @@ docker build --tag vqm-test .
 You can modify the build script if you need to customized building steps beyond the Dockerfile.
 
 
-
-During evaluation process, you can use the `/data/tmp` inside docker as a location to store local file. For example, if you need to decode the input video into Y4M or image, you can store the file at this location. An external disk will be mounted on the docker at `/data` to store the input file and output result.
-
-The following commands will be run to get your model's output for one video:
+#### Run your model
+The following commands should be execute normally to get your model's output for one video:
 
 For NR model:
 
 ```bash
-docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [output_result_file_path]
+docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [output_result_file_path]
 ```
 
 For FR model:
 
 ```bash
-docker run --rm --gpus all -v [local_storage_folder]:/data -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
+docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
 ```
+
+The shell script `docker_run.sh`  will be used to test your model on private test set. 
+
+- Input video folder which have all the input MP4 will be mounted on `/data/videos` inside docker
+- Ouput empty folder will be mounted on `/data/reports` to receive your models output score txt file that have one float point number ranging from [0,100].
+- Temporary empty folder will be mounted on `/data/tmp` for your own usage. During evaluation process, you can use the `/data/tmp` inside docker as a location to store local file. For example, if you need to decode the input video into Y4M or image, you can store the file at this location. An external disk will be mounted on the docker at `/data` to store the input file and output result. 
+
+**You should use the following python code to test your model with the `docker_run.sh` script on the public test set to make sure it work with your evaluation before submission. If you container have any issue during testing on private test set, you will be asked to make modification and provide a workable docker application.**
+
+```Python
+docker_path = './docker_run.sh'
+cmd = f"{docker_path} {video_folder} {pvs_name} {ref_name} {reports_folder} {report_file} {cache_folder} > {runtime_log_path} 2>&1"
+subprocess.check_output(cmd, shell=True)
+```
+
+- `video_folder` is where distored video and reference video are located, they should be in the same folder with file name as `pvs_name` and `ref_name`.
+- `reports_folder` is an empty folder where the report file named `report_file` will be written by your application
+- `cache_folder` is an empty folder for your application, if not used you can give any empty folder here.
 
 
 ### Non-linear mapping 
