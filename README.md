@@ -6,6 +6,11 @@ In order to get your final ranking on the private test set, you have to submit a
 
 If your model is on Matlab or other platform that can not run inside docker. Please write it as python if possible and submit the docker repo. We only accept docker format submission for final evaluation.
 
+Please read and accept [this terms](https://sites.google.com/view/wacv2023-workshop-quality-va/competition#h.n0xwm1mc89cg) before submission. 
+
+Your submission should be a **Zip file** with only **one single folder** within that Zip file. The file size should be **less than 1Gb**. Please use the following link for submission.
+https://forms.gle/NuxvG8usFRtRiraL9
+
 ## Hardware environment
 
 All submitted docker solutions will be evaluated on a standard AWS EC2 instance (p3.2xlarge) with the following spec:
