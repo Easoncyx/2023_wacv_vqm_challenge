@@ -11,6 +11,8 @@ Please read and accept [this terms](https://sites.google.com/view/wacv2023-works
 Your submission should be a **Zip file** with only **one single folder** within that Zip file. The file size should be **less than 1Gb**. Please use the following link for submission.
 https://forms.gle/NuxvG8usFRtRiraL9
 
+This [repo's Zip](https://github.com/Easoncyx/2023_wacv_vqm_challenge/archive/refs/heads/main.zip) is an example submission that works with our test API. As long as your Docker follow the command line interface described in this document, you don't have to start with our example.
+
 ## Hardware environment
 
 All submitted docker solutions will be evaluated on a standard AWS EC2 instance (p3.2xlarge) with the following spec:
