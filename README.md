@@ -159,7 +159,7 @@ For NR model, a dummy video path will be passed for the reference video `input-r
 docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [dummy-input-reference-video-path] [output_result_file_path]
 ```
 
-The shell script `docker_run.sh`  will be used to test your model on private test set. 
+The shell script `docker_run.sh`  will be used to test your model on private test set. An external folder will be mounted inside docker at location `/data`:
 
 - Input video folder which have all the input MP4 will be mounted on `/data/videos` inside docker
 - Ouput empty folder will be mounted on `/data/reports` to receive your models output score txt file that have one float point number ranging from [0,100].
