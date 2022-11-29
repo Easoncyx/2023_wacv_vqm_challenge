@@ -111,7 +111,8 @@ Please following the command line interface below:
 For no reference (NR) model:
 
 - 1st positional argument: `pvs_video` is the path to the input **distorted** MP4 video
-- 2nd positional argument: `result_file` is the path to the location on the disk to write your result file
+- 2nd positional argument: `ref_video` is **a dummpy path** for the convenience of testing, you should keep this CLI but not use it for your model.
+- 3rd positional argument: `result_file` is the path to the location on the disk to write your result file
 
 
 
@@ -146,16 +147,16 @@ You can modify the build script if you need to customized building steps beyond 
 #### Run your model
 The following commands should be execute normally to get your model's output for one video:
 
-For NR model:
-
-```bash
-docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [output_result_file_path]
-```
-
 For FR model:
 
 ```bash
 docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [input-reference-video-path] [output_result_file_path]
+```
+
+For NR model, a dummy video path will be passed for the reference video `input-reference-video-path`, your model should not use this path.
+
+```bash
+docker run --rm --gpus all -t vqm-test [input-distorted-video-path] [dummy-input-reference-video-path] [output_result_file_path]
 ```
 
 The shell script `docker_run.sh`  will be used to test your model on private test set. 
