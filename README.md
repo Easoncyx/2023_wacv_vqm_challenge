@@ -177,8 +177,8 @@ subprocess.check_output(cmd, shell=True)
 - `cache_folder` is an empty folder for your application, if not used you can give any empty folder here.
 
 
-### Non-linear mapping 
-SROCC, PLCC, RMSE and runtime complexity will be used to benchmark the result. After we obtain the model's score, before calculating the PLCC and RMSE, a four-parameter non-linear mapping [1] shown below is used to map the model's prediction to MOS on private test set.
+### Evaluation metric and non-linear mapping 
+SROCC will be used to benchmark the result for the final ranking. PLCC, RMSE and runtime complexity will be used for reference but not for the ranking. After we obtain the model's prediction scores, before calculating the PLCC and RMSE, a four-parameter non-linear mapping [1] shown below is used to map the model's prediction to MOS on private test set.
 
 $$ f(o) = \frac{\beta_1-\beta_2}{1+e^{-\frac{o-\beta_3}{|\beta_4|}}} +\beta_2 $$ 
 
